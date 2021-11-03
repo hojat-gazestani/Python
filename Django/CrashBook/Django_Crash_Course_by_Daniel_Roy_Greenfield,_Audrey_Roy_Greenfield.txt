@@ -1,0 +1,81 @@
+conda create -n hellodjango python=3.9
+conda activate hellodjango
+pip install django
+
+django-admin startproject hellodjango
+VSC terminal: code hellodjango
+
+cd hellodjango
+ls
+hellodjango manage.py
+
+# Create database
+python manage.py migrate
+ls
+db.sqlite3 hellodjango manage.py
+
+python manage.py createsuperuser
+python manage.py runserver
+127.0.0.1:8000/admin
+
+cd hellodjango
+rm db.sqlite3
+python manage.py migrate
+python manage.py createsuperuser
+
+python manage.py startapp homepage
+
+# Prepping the Project for Templates
+
+hellodjango$ vim setting.py
+	TEMPLATES = [
+		...
+		'DIRS': [os.path.join(BASE_DIR, "templates")],
+		...
+	]
+	
+hellodjango/homepage$ vim views.py
+	from django.views.generic import TemplateVie
+	
+	class HoamePageView(TemplateView):
+    	template_name = 'index.html
+    	
+hellodjango$ vim urls.py
+	from homepage.views import HomepageView
+	
+	path('', HomepageView.as_view(), name='home'),
+	
+hellodjango/template$vim index.html
+	<h1>Greeting</h1>
+	<p>Hojii</p>
+	
+Views: Django communicate with the user, send out web pages(JSON, spreadsheets, PDFs)
+Template: used by views to render HTML for web pages
+TemplateView: renders a Django template and sends it to a browser
+
+----------------------------------------------------------
+12 Working With Variables in Templates
+
+hellodjango/template$vim index.html
+	<p>{{ my_statement }}</p
+	
+hellodjango/homepage$ vim views.py
+	class HoamePageView(TemplateView):
+	...
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['my_statement'] = 'Nice to see you!'
+        return contex
+        
+------------------------------------------------------------
+13 Calling View Methods From Templates
+
+hellodjango/homepage$ vim views.py
+	class HoamePageView(TemplateView):
+	...
+	def say_bye(self):
+        return "Goodbye
+        
+hellodjango/template$vim index.html
+	...
+	<p>{{ view.say_bye }}</p
