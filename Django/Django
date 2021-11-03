@@ -1,0 +1,28 @@
+python3 -m venv django-venv
+
+source django-venv/bin/activate
+
+pip install django gunicorn uwsgi
+
+pip freeze
+django-admin startproject django2
+
+cd django2
+python manage.py runserver
+gunicorn -w 4 ./django2/wsgi:application
+gunicorn -w 4 mysite.wsgi:application
+
+cat ./django2/wsgi.py 
+
+uwsgi --http :8081 --wsgi-file ./django2/wsgi.py --master --processes 4 --threads 2 --stats 127.0.0.1:91
+
+-------------
+
+gunicorn mysite.asgi:application -k uvicorn.workers.UvicornWorker
+
+gunicorn, uwsgi -> wsgi
+uvicorn, daphne -> asgi
+
+daphne -p 5555 mysite.asgi:application
+
+
