@@ -1,0 +1,8 @@
+pip install scapy
+
+sudo apt install tcpdump graphviz imagemagick python-gnuplot python-cryptography python-pyx
+sudo yum install tcpdump graphviz ImageMagick gnuplot python-crypto PyX -y
+
+ls()
+
+send(IP(dst="10.10.10.1")/ICMP()/"Welcome to Enterprise Automation Course")
