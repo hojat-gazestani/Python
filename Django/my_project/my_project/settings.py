@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'Extending_templates.apps.ExtendingTemplatesConfig',
     'TemplateView_pages.apps.TemplateviewPagesConfig',
     'django.contrib.admin',
     'django.contrib.auth',

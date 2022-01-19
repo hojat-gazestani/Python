@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 class HomePageView(TemplateView):
-    template_name = 'templateview/home.html'
+    template_name = 'extending/home.html'
 
 class AboutPageView(TemplateView):
-    template_name = 'templateview/about.html'
+    template_name = 'extending/about.html'
