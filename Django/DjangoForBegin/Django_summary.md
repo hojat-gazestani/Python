@@ -13,6 +13,10 @@ Django for Beginners
 - [database model](#database-model)
   - [Create a database model](#Create-a-database-model)
   - [ListView](#ListView)
+  - [Tests](#Tests)
+  - [BlogListView](#BlogListView)
+  - [Static files](#Static-files)
+  - [DetailView](#DetailView)
 
 
 ## Initial setup
@@ -310,3 +314,400 @@ class HomePageViewTest(TestCase):
       
 python manage.py test
 ```
+
+## BlogListView
+
+### Initial Set Up
+```commandline
+$ mkdir blog
+$ cd blog
+$ pipenv install django== .
+$ pipenv shell
+(blog) $ django-admin startproject blog_project .
+(blog) $ python manage.py startapp blog
+(blog) $ python manage.py migrate
+(blog) $ python manage.py runserver
+```
+
+```commandline
+# blog_project/settings.py
+INSTALLED_APPS = [
+    'blog.apps.BlogConfig', # new
+    ...
+    ]
+```
+
+### Database Models
+```commandline
+# blog/models.py
+from django.db import models
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+    )
+    body = models.TextField()
+    
+    def __str__(self):
+        return self.title
+```
+
+```commandline
+(blog) $ python manage.py makemigrations blog
+(blog) $ python manage.py migrate blog
+```
+
+### Admin
+```commandline
+python manage.py createsuperuser
+```
+
+### show post
+```commandline
+# blog/admin.py
+from django.contrib import admin
+from .models import Post
+
+admin.site.register(Post)
+```
+
+### urls
+```commandline
+# blog_project/urls.py
+from django.contrib import admin
+from django.urls import path, include # new
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('blog.urls')), # new
+]
+```
+
+### BlogListView
+```commandline
+# blog/urls.py
+from django.urls import path
+from .views import BlogListView
+
+urlpatterns = [
+    path('', BlogListView.as_view(), name='home'),
+]
+```
+
+### view 
+```commandline
+# blog/views.py
+from django.views.generic import ListView
+from .models import Post
+
+class BlogListView(ListView):
+    model = Post
+    template_name = 'home.html'
+```
+
+### Templates
+```commandline
+(blog) $ mkdir templates
+(blog) $ touch templates/base.html
+(blog) $ touch templates/home.html
+```
+
+```commandline
+# blog_project/settings.py
+TEMPLATES = [
+{
+...
+'DIRS': [os.path.join(BASE_DIR, 'templates')], # new
+...
+},
+]
+```
+
+```commandline
+vim templates/base.html
+{% load staticfiles %}
+
+<html>
+  <head>
+      <title>Django blog</title>
+  </head>
+  <body>
+    <div>
+      <header>
+          <h1><a href="{% url 'home' &}">Django blog</a> </h1>
+      </header>
+    {% block content %}
+    {% endblock content %}
+    </div>
+  </body>
+</html>
+```
+
+```commandline
+vim templates/home.html
+{% extends 'base.html' %}
+
+{% block content %}
+  {% for post in object_list %}
+    <div class="post-entry">
+        <h2><a href="">{{ post.title }}</a> </h2>
+        <p>{{ post.body }}</p>
+    </div>
+  {% endfor %}
+{% endblock content %}% 
+```
+
+### Static files
+```commandline
+(blog) $ mkdir -p static/css
+(blog) $ vim static/css/base.css
+/* static/css/base.css */
+header h1 a {
+color: red;
+}
+```
+
+```commandline
+# blog_project/settings.py
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+```
+
+```commandline
+<!-- templates/base.html -->
+{% load static %}
+<html>
+<head>
+<title>Django blog</title>
+<link href="{% static 'css/base.css' %}" rel="stylesheet">
+</head>
+...
+```
+
+### more
+```commandline
+<!-- templates/base.html -->
+{% load static %}
+<html>
+<head>
+  <title>Django blog</title>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:rel="stylesheet">
+  <link href="{% static 'css/base.css' %}" rel="stylesheet">
+</head>
+...
+```
+
+```commandline
+vim static/css/base.css
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+}
+
+header {
+  border-bottom: 1px solid #999;
+  margin-bottom: 2rem;
+  display: flex;
+}
+header h1 a {
+    color: red;
+    text-decoration: none;
+}
+
+.nav-left {
+  margin-right: auto;
+}
+
+.nav-right {
+  display: flex;
+  padding-top: 2rem;
+}
+
+.post-entry {
+  margin-bottom: 2rem;
+}
+
+.post-entry h2{
+  margin: 0.2rem 0;
+}
+
+.post-entry h2 a,
+.post-entry h2 a: visited {
+  color: blue;
+  text-decoration: none;
+}
+
+.post-entry p {
+  margin: 0;
+  font-weight: 400;
+}
+
+.post-entry h2 a:hovar {
+  color: red;
+}
+
+```
+### DetailView
+### Individual blog pages
+```commandline
+vim blog/views.py
+from django.shortcuts import render
+
+from django.views.generic import ListView, DetailView
+from .models import Post
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+
+class BlogListView(ListView):
+    model = Post
+    template_name = 'home.html'
+
+
+class BlogDetailView(DetailView):
+    model = Post
+    template_name = 'post_detail.html'
+
+
+class BlogCreateView(CreateView):
+    model = Post
+    template_name = 'post_new.html'
+    fields = '__all__'
+
+
+class BlogUpdateView(UpdateView):
+    model = Post
+    template_name = 'post_edit.html'
+    fields = ['title', 'body']
+
+class BlogDeleteView(DeleteView):
+    model = Post
+    template_name = 'post_delete.html'
+    success_url = reverse_lazy('home')%    
+```
+
+### 
+```commandline
+❯ cat templates/post_detail.html
+<!-- templates/post_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="post-entry">
+      <h2>{{ post.title }}</h2>
+      <h2>{{ post.body }}</h2>
+  </div>
+
+
+  <p><a href="{% url 'post_edit' post.pk %}">+ Edit Blog Post</a></p>
+  <p><a href="{% url 'post_delete' post.pk %}">+ Delete Blog Post</a></p>
+{% endblock content %}% 
+```
+
+### url
+```commandline
+❯ cat blog/urls.py
+from django.urls import path
+
+from .views import (
+    BlogListView,
+    BlogDetailView,
+    BlogCreateView,
+    BlogUpdateView,
+    BlogDeleteView,
+)
+
+urlpatterns = [
+    path('post/<int:pk>/delete/',
+         BlogDeleteView.as_view(), name='post_delete'),
+    path('post/<int:pk>/edit/',
+         BlogUpdateView.as_view(), name='post_edit'),
+    path('post/new/', BlogCreateView.as_view(), name='post_new'),
+    path('post/<int:pk>/', BlogDetailView.as_view(), name='post_detail'),
+    path('', BlogListView.as_view(), name='home')
+]% 
+```
+
+```commandline
+❯ cat templates/home.html
+{% extends 'base.html' %}
+
+{% block content %}
+  {% for post in object_list %}
+    <div class="post-entry">
+        <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a> </h2>
+        <p>{{ post.body }}</p>
+    </div>
+  {% endfor %}
+{% endblock content %}% 
+```
+
+### test
+```commandline
+❯ cat blog/tests.py
+from django.test import TestCase, Client
+from django.contrib.auth import get_user_model
+from django.urls import reverse
+
+from .models import Post
+
+class BlogTest(TestCase):
+
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username='testuser',
+            email='test@email.com',
+            password='secret'
+        )
+
+        self.post = Post.objects.create(
+            title='A good title',
+            body='Nice body content',
+            author=self.user,
+        )
+
+    def test_string_representation(self):
+        post = Post(title='A sample title')
+        self.assertEqual(str(post), post.title)
+
+    def test_post_content(self):
+        self.assertEqual(f'{self.post.title}', 'A good title')
+        self.assertEqual(f'{self.post.author}', 'testuser')
+        self.assertEqual(f'{self.post.body}', 'Nice body content')
+
+    def test_post_list_view(self):
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Nice body content')
+        self.assertTemplateNotUsed(response, 'home.html')
+
+    def test_post_detail_view(self):
+        response = self.client.get('/post/1/')
+        no_response = self.client.get('/post/100000/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, 'A good title')
+        self.assertTemplateNotUsed(response, 'post_detail.html')
+
+    def test_post_create_view(self):
+        response = self.client.post(reverse('post_new')), {
+            'title' : 'New title',
+            'body'  : 'New text',
+            'author': self.user,
+        }
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'New title')
+        self.assertContains(response, 'New text')
+
+    def test_post_update_view(self):
+        response = self.client.post(reverse('post_edit', args='1')), {
+            'titile' : 'Update title',
+            'body'   : 'Update text',
+        }
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_delete_view(self):
+        response = self.client.get(
+            reverse('post_delete', args='1'))
+        self.assertEqual(response.status_code, 200)
+```
+
