@@ -1,0 +1,35 @@
+python manage.py startapp pages
+
+## Add new pages app to Django project
+vim helloworld_project/setting.py
+	INSTALLED_APPS = [
+		'pages.apps.PagesConfig',
+		...
+	]
+	
+## handle the request/response logic
+#  Determine What content is displayed
+vim pages/views.py
+	form django.http import HttpResponse
+	
+	def homePagesView(request):
+		return HttpResponse('Hello, World!')
+		
+## Determine where views.py content is going		
+vim pages/urls.py
+	from django.urls import path
+	
+	from .views import hamePageView
+	
+	urlpatterns = [
+		path('', homePageView, name='home')
+	]
+	
+## URLpattern for our pages app
+#  Whenever a user visits the homepage at / , will route to the pages app, then to the homePageView view
+vim helloworld_project/url.py
+	form django.urls import include
+	
+	urlpatterns = [
+		path('', include('pages.urls')),
+	]	
