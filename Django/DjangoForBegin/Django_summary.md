@@ -1,35 +1,47 @@
-python manage.py startapp pages
+Django for Beginners
+====================
 
-## Add new pages app to Django project
-vim helloworld_project/setting.py
-	INSTALLED_APPS = [
-		'pages.apps.PagesConfig',
-		...
-	]
-	
-## handle the request/response logic
-#  Determine What content is displayed
-vim pages/views.py
-	form django.http import HttpResponse
-	
-	def homePagesView(request):
-		return HttpResponse('Hello, World!')
-		
-## Determine where views.py content is going		
-vim pages/urls.py
-	from django.urls import path
-	
-	from .views import hamePageView
-	
-	urlpatterns = [
-		path('', homePageView, name='home')
-	]
-	
-## URLpattern for our pages app
-#  Whenever a user visits the homepage at / , will route to the pages app, then to the homePageView view
-vim helloworld_project/url.py
-	form django.urls import include
-	
-	urlpatterns = [
-		path('', include('pages.urls')),
-	]	
+- [Initial setup](#Initial-setup)
+  - [Virtual Environments](#Virtual-Environments)
+  - [Create an app](#Create an app)
+
+
+## Initial setup
+
+### Virtual Environments
+```commandline
+pip3 install pipenv
+
+mkdir django
+cd django
+
+pipenv install django==2.1.7
+pipenv shell
+
+django-admin startproject test_project .
+python manage.py runserver
+```
+
+### Create an app
+```commandline
+python manage.py startapp pages
+```
+* admin.py is a configuration file for the built-in Django Admin app
+* apps.py is a configuration file for the app itself
+* migrations/ keeps track of any changes to our models.py file so our database and models.py stay in sync
+* models.py is where we define our database models, which Django automatically
+* tests.py is for our app-specific tests
+* views.py is where we handle the request/response logic for our web app translates into database tables
+
+### Add Created app
+* Django doesn’t “know” about it until Add our new pages app at the top:
+````commandline
+# helloworld_project/settings.py
+INSTALLED_APPS = [
+'pages.apps.PagesConfig', 
+...
+]
+````
+
+### Django Architecture
+
