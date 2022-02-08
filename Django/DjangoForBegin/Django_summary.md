@@ -4,6 +4,7 @@ Django for Beginners
 - [Initial setup](#Initial-setup)
   - [Virtual Environments](#Virtual-Environments)
   - [Create an app](#Create an app)
+  - [Django Architecture](#Django-Architecture)
 
 
 ## Initial setup
@@ -45,3 +46,6 @@ INSTALLED_APPS = [
 
 ### Django Architecture
 
+![alt text](https://github.com/hojat-gazestani/Python/blob/main/Django/DjangoForBegin/Pic/1-Django-arch.png)
+
+### Views and URLConfs
