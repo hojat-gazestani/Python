@@ -236,7 +236,7 @@ admin.site.register(Post)
 ```
 
 ### Views/Templates/URLs
-![alt text]()
+![alt text](https://github.com/hojat-gazestani/Python/blob/main/Django/DjangoForBegin/Pic/2-posts-model.png)
 ### ListView
 ```commandline
 # posts/views.py
@@ -310,4 +310,3 @@ class HomePageViewTest(TestCase):
       
 python manage.py test
 ```
-
