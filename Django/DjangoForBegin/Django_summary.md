@@ -17,6 +17,8 @@ Django for Beginners
   - [BlogListView](#BlogListView)
   - [Static files](#Static-files)
   - [DetailView](#DetailView)
+- [Blog app](#Blog-app)
+  - []
 
 
 ## Initial setup
@@ -711,3 +713,101 @@ class BlogTest(TestCase):
         self.assertEqual(response.status_code, 200)
 ```
 
+
+### todo
+...
+### todo
+
+
+### Blog app
+
+### Initial Set Up
+
+### Add created app to django
+* blog_project/settings.py
+
+### Database Models
+* blog/models.py
+
+### initiate database
+```commandline
+(blog) $ python manage.py makemigrations blog
+(blog) $ python manage.py migrate blog
+```
+
+### Admin
+```commandline
+(blog) $ python manage.py createsuperuser
+```
+
+### add post to admin page
+* blog/admin.py
+
+### Create post in web
+
+### blog urls
+* blog/urls.py
+
+### project urls
+* blog_project/urls.py
+
+### ListView
+```commandline
+vim blog/views.py
+from django.views.generic import ListView
+from .models import Post
+
+class BlogListView(ListView):
+  model = Post
+  template_name = 'home.html'
+```
+
+### Templates
+```commandline
+(blog) $ mkdir templates
+(blog) $ touch templates/base.html
+(blog) $ touch templates/home.html
+```
+
+```commandline
+# blog_project/settings.py
+TEMPLATES = [
+{
+...
+'DIRS': [os.path.join(BASE_DIR, 'templates')], # new
+...
+},
+]
+```
+
+```commandline
+<!-- templates/base.html -->
+<html>
+  <head>
+    <title>Django blog</title>
+  </head>
+  <body>
+    <header>
+      <h1><a href="{% url 'home' %}">Django blog</a></h1>
+    </header>
+    <div>
+      {% block content %}
+      {% endblock content %}
+    </div>
+  </body>
+</html>
+```
+
+```commandline
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  {% for post in object_list %}
+    <div class="post-entry">
+      <h2><a href="">{{ post.title }}</a></h2>
+      <p>{{ post.body }}</p>
+    </div>
+  {% endfor %}
+{% endblock content %}
+```
