@@ -13,7 +13,7 @@ python manage.py runserver
 ```
 
 ### Create an app
-```shell
+```python
 python manage.py startapp pages
 
 vim helloworld_project/settings.py
@@ -23,7 +23,7 @@ INSTALLED_APPS = [
 ]
 
 ### Views and URLConfs
-```shell
+```python
 vim pages/views.py
 from django.http import HttpResponse
 
@@ -31,7 +31,7 @@ def homePageView(request):
     return HttpResponse('Hello, World!')
 ```
 
-```shell
+```python
 vim pages/urls.py
 from django.urls import path
 from .views import homePageView
@@ -41,7 +41,7 @@ urlpatterns = [
 ]
 ```
 
-```shell
+```python
 vim helloworld_project/urls.py
 from django.contrib import admin
 from django.urls import path, include

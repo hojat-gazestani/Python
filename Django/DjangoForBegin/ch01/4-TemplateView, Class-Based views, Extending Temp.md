@@ -11,7 +11,7 @@ django-admin startproject pages_project .
 ```
 
 ### Create an app
-```shell
+```python
 python manage.py startapp pages
 
 vim helloworld_project/settings.py
@@ -22,7 +22,7 @@ INSTALLED_APPS = [
 ```
 
 ### Templates
-```shell
+```html
 mkdir templates/home.html
 <h1>Homepage</h1>
 
@@ -35,7 +35,7 @@ TEMPLATES = [
 ```
 
 ### TemplateView, Class-Based views
-```shell
+```python
 vim pages/views.py
 from django.views.generic import TemplateView
 
@@ -44,7 +44,7 @@ class HomePageView(TemplateView):
 ```
 
 ### URLs
-```shell
+```python
 vim pages_project/urls.py
 from django.urls import path, include
 
@@ -63,7 +63,7 @@ urlpatterns = [
 ]
 ```
 ### Add an About Page
-```shell
+```html
 vim templates/about.html
 <h1>About page</h1>
 
@@ -79,7 +79,7 @@ urlpatterns = [
 ```
 
 ### Extending Templates
-```shell
+```html
 vim templates/base.html
 <header>
     <a href="{% url 'home' %}">Home</a> | <a href="{% url 'about' %}">About</a>
