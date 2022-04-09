@@ -26,6 +26,7 @@ INSTALLED_APPS = [
 mkdir templates/home.html
 <h1>Homepage</h1>
 
+<!-- ------------------------------------------------- -->
 vim pages_project/settings.py
 TEMPLATES = [
         ...
@@ -53,6 +54,7 @@ urlpatterns = [
     path('', include('pages.urls")),
 ]
 
+# ------------------------------------------------------
 vim pages/urls.py
 from django.urls import path
 
@@ -67,11 +69,13 @@ urlpatterns = [
 vim templates/about.html
 <h1>About page</h1>
 
+<!-- ------------------------------------------------- -->
 vim pages/views.py
 ...
 class AboutPageView(TemplateView):
     template_name = 'about.html'
-    
+
+<!-- ------------------------------------------------- -->
 vim pages/urls.py
 urlpatterns = [
     path('about/', AboutPageView.as_view(), name='about'),
