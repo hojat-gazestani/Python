@@ -88,6 +88,8 @@ vim templates/base.html
 {% block content %}
 {% endblock content %}
 
+<!-- ------------------------------------------------- -->
+
 vim templates/home.html
 {% extends 'base.html' %}
 
@@ -95,6 +97,7 @@ vim templates/home.html
 <h1>Homepage</h1>
 {% endblock content %}
 
+<!-- ------------------------------------------------- -->
 vim templates/about.html
 {% extends 'base.html' %}
 
