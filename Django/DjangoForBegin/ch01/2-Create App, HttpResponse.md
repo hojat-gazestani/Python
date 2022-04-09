@@ -21,8 +21,8 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     ...
 ]
-
-* ** Views and URLConfs **
+```
+### Views and URLConfs
 ```python
 vim pages/views.py
 from django.http import HttpResponse
