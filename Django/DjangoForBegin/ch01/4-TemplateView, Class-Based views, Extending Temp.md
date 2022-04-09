@@ -80,7 +80,6 @@ urlpatterns = [
 
 ### Extending Templates
 ```html
-<!-- Base file -->
 vim templates/base.html
 <header>
     <a href="{% url 'home' %}">Home</a> | <a href="{% url 'about' %}">About</a>
@@ -89,7 +88,6 @@ vim templates/base.html
 {% block content %}
 {% endblock content %}
 
-<!-- frist extend -->
 vim templates/home.html
 {% extends 'base.html' %}
 
@@ -97,7 +95,6 @@ vim templates/home.html
 <h1>Homepage</h1>
 {% endblock content %}
 
-<!-- second extend -->
 vim templates/about.html
 {% extends 'base.html' %}
 
