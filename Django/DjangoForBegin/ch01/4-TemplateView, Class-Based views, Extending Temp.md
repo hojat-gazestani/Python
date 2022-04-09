@@ -79,8 +79,8 @@ urlpatterns = [
 ```
 
 ### Extending Templates
-```html
-vim templates/base.html
+```shell
+$ vim templates/base.html
 <header>
     <a href="{% url 'home' %}">Home</a> | <a href="{% url 'about' %}">About</a>
 </header>
@@ -88,14 +88,14 @@ vim templates/base.html
 {% block content %}
 {% endblock content %}
 
-vim templates/home.html
+$ vim templates/home.html
 {% extends 'base.html' %}
 
 {% block content %}
 <h1>Homepage</h1>
 {% endblock content %}
 
-vim templates/about.html
+$ vim templates/about.html
 {% extends 'base.html' %}
 
 {% block content %}
